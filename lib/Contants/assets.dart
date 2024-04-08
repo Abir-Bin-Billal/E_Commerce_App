@@ -1,0 +1,1 @@
+const bgimage = "assets/splash_screen.webp";
