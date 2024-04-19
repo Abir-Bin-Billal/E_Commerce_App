@@ -14,7 +14,7 @@ class splash_Screen extends StatefulWidget {
 class _splash_ScreenState extends State<splash_Screen> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 3), (){
+    Future.delayed(Duration(seconds: 1), (){
       Get.offAll(() => login_Screen());
     });
     super.initState();
