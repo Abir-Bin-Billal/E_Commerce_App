@@ -1,9 +1,14 @@
 import 'package:e_commerce_app/Contants/common-button.dart';
 import 'package:e_commerce_app/Contants/common_toast.dart';
 import 'package:e_commerce_app/Contants/loading_indicator.dart';
+import 'package:e_commerce_app/api_services/api_pref.dart';
 import 'package:e_commerce_app/api_services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/route_manager.dart';
+
+import 'home_screen.dart';
 
 class login_Screen extends StatefulWidget {
   login_Screen({super.key});
@@ -107,13 +112,15 @@ class _login_ScreenState extends State<login_Screen> {
                       if (_formKey.currentState!.validate()) {
                         commonToast("valided");
                         setState(() {
-                          isLoading = true  ;
+                          isLoading = true;
                         });
                         ApiServices()
                             .userlogin(usernameController.text.toString(),
                                 passwordController.text.toString())
                             .then((value) {
                           debugPrint(value.toString());
+                          ApiPref().setUserToken(value["token"].toString());
+                          Get.offAll(() => homeScreen());
                           setState(() {
                             isLoading = false;
                           });
@@ -123,7 +130,7 @@ class _login_ScreenState extends State<login_Screen> {
                           });
                           debugPrint(error.toString());
                         });
-                      } else{
+                      } else {
                         commonToast("Invalid Credintial");
                       }
                     })
