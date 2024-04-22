@@ -3,6 +3,7 @@ import 'package:e_commerce_app/Contants/common_toast.dart';
 import 'package:e_commerce_app/Contants/loading_indicator.dart';
 import 'package:e_commerce_app/api_services/api_pref.dart';
 import 'package:e_commerce_app/api_services/api_service.dart';
+import 'package:e_commerce_app/sign_up%20screens/user_register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -133,7 +134,36 @@ class _login_ScreenState extends State<login_Screen> {
                       } else {
                         commonToast("Invalid Credintial");
                       }
-                    })
+                    }),
+                SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => UserRegistrate());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "New user",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Register",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),
