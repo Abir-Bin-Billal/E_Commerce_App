@@ -1,7 +1,12 @@
+import 'package:e_commerce_app/Contants/assets.dart';
 import 'package:e_commerce_app/Contants/common-button.dart';
 import 'package:e_commerce_app/Contants/common_toast.dart';
 import 'package:e_commerce_app/Contants/loading_indicator.dart';
+import 'package:e_commerce_app/api_services/api_pref.dart';
 import 'package:e_commerce_app/api_services/api_service.dart';
+import 'package:e_commerce_app/models/user_registration_model.dart';
+import 'package:e_commerce_app/sign_up%20screens/home_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
@@ -14,22 +19,24 @@ class UserRegistrate extends StatefulWidget {
 }
 
 class _UserRegistrateState extends State<UserRegistrate> {
-    final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-   TextEditingController emailController = TextEditingController();
-   TextEditingController cityNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController cityNameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   FocusNode usernameNode = FocusNode();
   FocusNode passwordNode = FocusNode();
-   FocusNode emailNode = FocusNode();
-    FocusNode cityNode = FocusNode();
- 
+  FocusNode emailNode = FocusNode();
+  FocusNode cityNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
-        leading: BackButton(color: Colors.white,),
+      appBar: AppBar(
+        leading: BackButton(
+          color: Colors.white,
+        ),
         title: Center(
           child: Text(
             "Register",
@@ -46,9 +53,9 @@ class _UserRegistrateState extends State<UserRegistrate> {
           padding: EdgeInsets.symmetric(horizontal: 10.0),
           child: Form(
             key: _formKey,
-            child: Column(  
+            child: Column(
               children: [
-                  TextFormField(
+                TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please write something";
@@ -80,23 +87,23 @@ class _UserRegistrateState extends State<UserRegistrate> {
                     FocusScope.of(context).requestFocus(passwordNode);
                   },
                 ),
-               TextFormField(
-                          controller: passwordController,
-                          focusNode: passwordNode,  
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please write something";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: "Enter Password",
-                            hintText: "Password",
-                          ),
-                          onFieldSubmitted: (v) {
-                            FocusScope.of(context).requestFocus(cityNode);
-                          }),
-                            TextFormField(
+                TextFormField(
+                    controller: passwordController,
+                    focusNode: passwordNode,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please write something";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: "Enter Password",
+                      hintText: "Password",
+                    ),
+                    onFieldSubmitted: (v) {
+                      FocusScope.of(context).requestFocus(cityNode);
+                    }),
+                TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please write something";
@@ -116,11 +123,49 @@ class _UserRegistrateState extends State<UserRegistrate> {
                   height: 20,
                 ),
                 common_button(
-                    child: isLoading ? loadingIndicator() : Text("register"),
+                    child: isLoading? loadingIndicator() : Text("register"),
                     onTap: () {
+                        setState(() {
+                            isLoading = true;
+                          });
                       if (_formKey.currentState!.validate()) {
-                       
-                      } 
+                        UserRegistrationModel userRegistrationModel =
+                            UserRegistrationModel();
+                        userRegistrationModel.email =
+                            emailController.text.toString();
+                        userRegistrationModel.username =
+                            usernameController.text.toString();
+                        userRegistrationModel.password =
+                            passwordController.text.toString();
+                        userRegistrationModel.name?.firstname = "John";
+                        userRegistrationModel.name?.lastname = "Doe";
+                        userRegistrationModel.address?.city = "kilcoole";
+                        userRegistrationModel.address?.street = "kilcoole";
+                        userRegistrationModel.address?.number = 3;
+                        userRegistrationModel.address?.zipcode = "kilcoole";
+                        userRegistrationModel.address?.geolocation?.lat =
+                            "kilcoole";
+                        userRegistrationModel.address?.geolocation?.long =
+                            "dfbhb";
+                        userRegistrationModel.phone = "ffdfdf";
+
+                        ApiServices()
+                            .userRegister(userRegistrationModel)
+                            .then((value) {
+                          debugPrint(value.toString());
+                          ApiPref().setUserToken(value["id"].toString());
+                        
+                          Get.offAll(() => homeScreen());
+                         
+                          commonToast("Registration Successfull");
+                        }).onError((error, stackTrace) {
+                          setState(() {
+                            isLoading = true;
+                            debugPrint(error.toString());
+                            commonToast("Something went wrong");
+                          });
+                        });
+                      }
                     }),
               ],
             ),

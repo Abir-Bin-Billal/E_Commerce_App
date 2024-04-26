@@ -21,8 +21,8 @@ class ApiServices {
   //User registration API
   
     Future<dynamic> userRegister(UserRegistrationModel userRegistrationModel) async {
-    var respose = await http.post(Uri.parse("$baseUrl/auth/login"),
-        body: userRegistrationModel);
+    var respose = await http.post(Uri.parse("$baseUrl/users"),
+        body: jsonEncode(userRegistrationModel));
     if (respose.statusCode == 200) {
       return jsonDecode(respose.body);
     } else {
