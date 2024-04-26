@@ -5,7 +5,7 @@ import 'package:e_commerce_app/Contants/loading_indicator.dart';
 import 'package:e_commerce_app/api_services/api_pref.dart';
 import 'package:e_commerce_app/api_services/api_service.dart';
 import 'package:e_commerce_app/models/user_registration_model.dart';
-import 'package:e_commerce_app/sign_up%20screens/home_screen.dart';
+import 'package:e_commerce_app/screens/button_bar_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -123,11 +123,11 @@ class _UserRegistrateState extends State<UserRegistrate> {
                   height: 20,
                 ),
                 common_button(
-                    child: isLoading? loadingIndicator() : Text("register"),
+                    child: isLoading ? loadingIndicator() : Text("register"),
                     onTap: () {
-                        setState(() {
-                            isLoading = true;
-                          });
+                      setState(() {
+                        isLoading = true;
+                      });
                       if (_formKey.currentState!.validate()) {
                         UserRegistrationModel userRegistrationModel =
                             UserRegistrationModel();
@@ -154,9 +154,9 @@ class _UserRegistrateState extends State<UserRegistrate> {
                             .then((value) {
                           debugPrint(value.toString());
                           ApiPref().setUserToken(value["id"].toString());
-                        
-                          Get.offAll(() => homeScreen());
-                         
+
+                          Get.offAll(() => ButtomBarTabs());
+
                           commonToast("Registration Successfull");
                         }).onError((error, stackTrace) {
                           setState(() {

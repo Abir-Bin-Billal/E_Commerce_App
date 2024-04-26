@@ -1,6 +1,6 @@
 import 'package:e_commerce_app/Contants/assets.dart';
 import 'package:e_commerce_app/api_services/api_pref.dart';
-import 'package:e_commerce_app/sign_up%20screens/home_screen.dart';
+import 'package:e_commerce_app/screens/button_bar_tabs.dart';
 import 'package:e_commerce_app/sign_up%20screens/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class _splash_ScreenState extends State<splash_Screen> {
         if (value == "") {
           Get.offAll(() => login_Screen());
         } else {
-          Get.offAll(() => homeScreen());
+          Get.offAll(() => ButtomBarTabs());
         }
       });
       Get.offAll(() => login_Screen());

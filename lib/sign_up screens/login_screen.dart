@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 
-import 'home_screen.dart';
+import '../screens/button_bar_tabs.dart';
 
 class login_Screen extends StatefulWidget {
   login_Screen({super.key});
@@ -121,7 +121,7 @@ class _login_ScreenState extends State<login_Screen> {
                             .then((value) {
                           debugPrint(value.toString());
                           ApiPref().setUserToken(value["token"].toString());
-                          Get.offAll(() => homeScreen());
+                          Get.offAll(() => ButtomBarTabs());
                           setState(() {
                             isLoading = false;
                           });
