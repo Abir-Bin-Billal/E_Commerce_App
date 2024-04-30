@@ -108,13 +108,13 @@ class _login_ScreenState extends State<login_Screen> {
                   height: 20,
                 ),
                 common_button(
-                    child: isLoading ? loadingIndicator() : Text("Login"),
+                    child: isLoading ? loadingIndicator(Colors.white) : Text("Login"),
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        commonToast("valided");
-                        setState(() {
+                         setState(() {
                           isLoading = true;
                         });
+                        commonToast("valided");
                         ApiServices()
                             .userlogin(usernameController.text.toString(),
                                 passwordController.text.toString())

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:e_commerce_app/Contants/common_toast.dart';
+import 'package:e_commerce_app/models/product_model.dart';
 import 'package:e_commerce_app/models/user_registration_model.dart';
 import 'package:e_commerce_app/sign_up%20screens/user_register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,8 +20,9 @@ class ApiServices {
     }
   }
   //User registration API
-  
-    Future<dynamic> userRegister(UserRegistrationModel userRegistrationModel) async {
+
+  Future<dynamic> userRegister(
+      UserRegistrationModel userRegistrationModel) async {
     var respose = await http.post(Uri.parse("$baseUrl/users"),
         body: jsonEncode(userRegistrationModel));
     if (respose.statusCode == 200) {
@@ -29,6 +31,15 @@ class ApiServices {
       throw commonToast("Invalid");
     }
   }
+
+  //User product model
+  Future<List<ProductModel>> getAllproduct() async {
+    var respose = await http.get(Uri.parse("$baseUrl/products"));
+    if (respose.statusCode == 200) {
+      return List<ProductModel>.from(
+          json.decode(respose.body).map((x) =>  ProductModel.fromJson(x as Map<String , dynamic>)));
+    } else {
+      throw commonToast("Invalid");
+    }
+  }
 }
-
-

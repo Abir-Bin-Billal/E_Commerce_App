@@ -123,7 +123,7 @@ class _UserRegistrateState extends State<UserRegistrate> {
                   height: 20,
                 ),
                 common_button(
-                    child: isLoading ? loadingIndicator() : Text("register"),
+                    child: isLoading ? loadingIndicator(Colors.white) : Text("register"),
                     onTap: () {
                       setState(() {
                         isLoading = true;
