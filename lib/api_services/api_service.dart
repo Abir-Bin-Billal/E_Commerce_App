@@ -22,8 +22,7 @@ class ApiServices {
   }
   //User registration API
 
-  Future<dynamic> userRegister(
-      UserRegistrationModel userRegistrationModel) async {
+  Future<dynamic> userRegister(UserRegistrationModel userRegistrationModel) async {
     var respose = await http.post(Uri.parse("$baseUrl/users"),
         body: jsonEncode(userRegistrationModel));
     if (respose.statusCode == 200) {
@@ -43,6 +42,8 @@ class ApiServices {
       throw commonToast("Invalid");
     }
   }
+
+
   Future<SingleProductModel> getSingleproduct(int productID) async {
     var respose = await http.get(Uri.parse("$baseUrl/products/$productID"));
     if (respose.statusCode == 200) {
@@ -51,4 +52,15 @@ class ApiServices {
       throw commonToast("Invalid");
     }
   }
+
+
+  Future<dynamic> getAllCategories() async {
+    var respose = await http.get(Uri.parse("$baseUrl/products/categories"));
+    if (respose.statusCode == 200) {
+      return jsonDecode(respose.body);
+    } else {
+      throw commonToast("Invalid");
+    }
+  }
+
 }

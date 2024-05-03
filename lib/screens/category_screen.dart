@@ -1,4 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../Contants/common_toast.dart';
+import '../Contants/loading_indicator.dart';
+import '../api_services/api_service.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -8,17 +14,54 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+
+  dynamic category =[];
+  bool isLoading = false;
+
+  getAllCategory() {
+    ApiServices().getAllCategories().then((value) {
+      category = value;
+      setState(() {
+        isLoading = true;
+      });
+      debugPrint(value.toString());
+    }).onError((error, stackTrace) {
+      debugPrint(error.toString());
+      commonToast("Login APi error");
+    });
+  }
+@override
+  void initState() {
+  getAllCategory();
+  super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Center(
-          child: Text("Category" , style: TextStyle(
-            color: Colors.white
-          ),),
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          title: Center(
+            child: Text("Categories", style: TextStyle(
+                color: Colors.white
+            ),),
+          ),
         ),
-      ),
+        body: isLoading == false? Center(child: loadingIndicator(Colors.blue),) :
+        ListView.separated(
+          itemCount: category.length,
+          separatorBuilder: (context, i) {
+            return Divider();
+          },
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: CircleAvatar(
+                child: Text(index.toString()),
+              ),
+              title: Text(category[index].toString()),
+            );
+          },)
     );
   }
 }
