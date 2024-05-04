@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/screens/product_category_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,6 +42,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: BackButton(color: Colors.white,),
           backgroundColor: Colors.blue,
           title: Center(
             child: Text("Categories", style: TextStyle(
@@ -56,6 +58,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
           },
           itemBuilder: (context, index) {
             return ListTile(
+              onTap: (){
+                Get.to(() => ProductcategoryScreen(categoryName: category[index].toString(),));
+              },
               leading: CircleAvatar(
                 child: Text(index.toString()),
               ),

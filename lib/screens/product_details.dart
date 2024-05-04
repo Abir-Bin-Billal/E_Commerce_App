@@ -47,6 +47,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
+        leading: BackButton(color: Colors.white,),
         title: Center(
           child: Text(
             widget.productName ,

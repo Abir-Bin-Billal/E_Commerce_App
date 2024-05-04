@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:e_commerce_app/Contants/common_toast.dart';
 import 'package:e_commerce_app/models/product_model.dart';
+import 'package:e_commerce_app/models/produuct_category_model.dart';
 import 'package:e_commerce_app/models/single_product_model.dart';
 import 'package:e_commerce_app/models/user_registration_model.dart';
 import 'package:e_commerce_app/sign_up%20screens/user_register.dart';
@@ -63,4 +64,13 @@ class ApiServices {
     }
   }
 
+  Future<List<ProductCategoryModel>> getcategoryproduct(String categoryName) async {
+    var respose = await http.get(Uri.parse("$baseUrl/products/category/$categoryName"));
+    if (respose.statusCode == 200) {
+      return List<ProductCategoryModel>.from(
+          json.decode(respose.body).map((x) =>  ProductCategoryModel.fromJson(x as Map<String , dynamic>)));
+    } else {
+      throw commonToast("Invalid");
+    }
+  }
 }
