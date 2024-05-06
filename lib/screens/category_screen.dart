@@ -42,15 +42,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: BackButton(color: Colors.white,),
+          centerTitle: true,
           backgroundColor: Colors.blue,
-          title: Center(
-            child: Text("Categories", style: TextStyle(
+          title:Text("Categories", style: TextStyle(
                 color: Colors.white
             ),),
-          ),
+          
         ),
-        body: isLoading == false? Center(child: loadingIndicator(Colors.blue),) :
+        body: isLoading == false? Center(child: loadingIndicator(color :Colors.blue),) :
         ListView.separated(
           itemCount: category.length,
           separatorBuilder: (context, i) {

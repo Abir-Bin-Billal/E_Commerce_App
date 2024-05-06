@@ -16,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController searchController = TextEditingController();
+  bool isShowSearch = false;
   List<ProductModel> products = [];
   bool isLoading = true;
 
@@ -39,33 +41,72 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget build(BuildContext context) {
+    List<ProductModel> Filterproducts = [];
+    if (searchController.text.isEmpty) {
+      Filterproducts = products;
+    } else {
+      Filterproducts = products.where((element) => (element.title!.toLowerCase().contains(searchController.text.toLowerCase())))
+          .toList();
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Center(
-          child: Text(
-            "Products",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
+      appBar: isShowSearch
+          ? AppBar(
+              leading: BackButton(
+                color: Colors.black,
+                onPressed: () {
+                  setState(() {
+                    isShowSearch = false;
+                    searchController.clear();
+                  });
+                },
+              ),
+              title: TextFormField(
+                controller: searchController,
+                decoration: InputDecoration(hintText: "search"),
+                onChanged: (v) {
+                  setState(() {});
+                },
+              ),
+            )
+          : AppBar(
+              backgroundColor: Colors.blue,
+              title: Center(
+                child: Text(
+                  "Products",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isShowSearch = true;
+                      });
+                    },
+                    icon: Icon(Icons.search))
+              ],
+            ),
       body: isLoading
           ? Center(
-              child: loadingIndicator(Colors.black),
+              child: loadingIndicator(color: Colors.black),
             )
           : ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              itemCount: products.length,
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              itemCount: Filterproducts.length,
               separatorBuilder: (context, i) {
                 return SizedBox(
                   height: 8,
                 );
               },
               itemBuilder: (context, index) {
-                final data = products[index];
+                final data = Filterproducts[index];
                 return GestureDetector(
-                  onTap: (){
-                    Get.to(() => ProductDetails(productID: data.id,productName: data.title,));
+                  onTap: () {
+                    Get.to(() => ProductDetails(
+                          productID: data.id,
+                          productName: data.title,
+                        ));
                   },
                   child: Card(
                     child: Container(
@@ -82,18 +123,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 100,
                                   margin: EdgeInsets.only(left: 10),
                                   decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    image: DecorationImage(image: NetworkImage(data.image.toString()) , fit: BoxFit.cover)
-                                  ),
+                                      color: Colors.grey,
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              data.image.toString()),
+                                          fit: BoxFit.cover)),
                                 ),
-                                SizedBox(width: 10,),
+                                SizedBox(
+                                  width: 10,
+                                ),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(data.title.toString() , style: TextStyle(fontSize: 18 , fontWeight: FontWeight.bold),),
-                                      Text("Price: ${data.price.toString()}" , style: TextStyle(fontSize: 14 , fontWeight: FontWeight.w400),),
-                                      Text("Rating ${data.rating?.rate.toString()}" , style: TextStyle(fontSize: 14 , fontWeight: FontWeight.w400),),
+                                      Text(
+                                        data.title.toString(),
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "Price: ${data.price.toString()}",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      Text(
+                                        "Rating ${data.rating?.rate.toString()}",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400),
+                                      ),
                                     ],
                                   ),
                                 )
@@ -102,14 +163,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
-                            child: Text(data.description.toString() , style: TextStyle(fontSize: 14 , fontWeight: FontWeight.bold)),
+                            child: Text(data.description.toString(),
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold)),
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
                             child: common_button(
-                                child: Text("Buy Now"),
-                                onTap: (){}
-                            ),
+                                child: Text("Buy Now"), onTap: () {}),
                           )
                         ],
                       ),

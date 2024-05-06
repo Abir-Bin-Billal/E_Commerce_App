@@ -57,7 +57,7 @@ class _ProductcategoryScreenState extends State<ProductcategoryScreen> {
         ),
         body: isLoading
             ? Center(
-          child: loadingIndicator(Colors.black),
+          child: loadingIndicator(color :Colors.black),
         )
             : ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),

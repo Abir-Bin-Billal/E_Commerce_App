@@ -108,7 +108,7 @@ class _login_ScreenState extends State<login_Screen> {
                   height: 20,
                 ),
                 common_button(
-                    child: isLoading ? loadingIndicator(Colors.white) : Text("Login"),
+                    child: isLoading ? loadingIndicator(color: Colors.white , bgcolor: Colors.blue,) : Text("Login"),
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
                          setState(() {
