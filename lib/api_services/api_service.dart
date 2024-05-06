@@ -3,6 +3,7 @@ import 'package:e_commerce_app/Contants/common_toast.dart';
 import 'package:e_commerce_app/models/product_model.dart';
 import 'package:e_commerce_app/models/produuct_category_model.dart';
 import 'package:e_commerce_app/models/single_product_model.dart';
+import 'package:e_commerce_app/models/user_Detail_model';
 import 'package:e_commerce_app/models/user_registration_model.dart';
 import 'package:e_commerce_app/sign_up%20screens/user_register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,6 +70,15 @@ class ApiServices {
     if (respose.statusCode == 200) {
       return List<ProductCategoryModel>.from(
           json.decode(respose.body).map((x) =>  ProductCategoryModel.fromJson(x as Map<String , dynamic>)));
+    } else {
+      throw commonToast("Invalid");
+    }
+  }
+
+   Future<UserDetailModel> getUserDetail(String userID) async {
+    var respose = await http.get(Uri.parse("$baseUrl/users/$userID"));
+    if (respose.statusCode == 200) {
+      return UserDetailModel.fromJson(json.decode(respose.body));
     } else {
       throw commonToast("Invalid");
     }
